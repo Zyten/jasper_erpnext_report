@@ -3,8 +3,16 @@
 function bind_events() {
 
 	$(document).find("#jasper_print").click(function() {
+		
+		// hiding <br> elements and bringing them back after print
+		// cant get @media print style overriding to work
+		// if you were able to do it, pls send a PR :)
+		$("#jasper_viewer").contents().find("br").css("display", "none");
+		
 		window.frames["jasper_viewer"].focus();
 		window.frames["jasper_viewer"].print();
+		
+		$("#jasper_viewer").contents().find("br").css("display", "block");
 	});
 
 	$(document).find("#jasper_fullscreen").click(function() {
@@ -18,6 +26,16 @@ function bind_events() {
 frappe.ready(function() {
 
 	$("#jasper_viewer").ready(function(){
+		
+		var jasper_viewer = $("#jasper_viewer").contents();
+		
+		// make everything in pt rather than in px
+		jasper_viewer.find("html").html(function(i, html){
+			return html.replace(/\px/g, "pt");
+		});		
+		// make jrPage css to have page-break-after:always
+		jasper_viewer.find('.jrPage').css("page-break-after", "always");		
+		
 		bind_events();
 	});
 
