@@ -27,14 +27,17 @@ frappe.ready(function() {
 
 	$("#jasper_viewer").ready(function(){
 		
-		var jasper_viewer = $("#jasper_viewer").contents();
+		if (rtype == "html") { 
+			// do these only if its html we are previewing.. rtype comes from jinja /pages/Jasper Reports.html
 		
-		// make everything in pt rather than in px
-		jasper_viewer.find("html").html(function(i, html){
-			return html.replace(/\px/g, "pt");
-		});		
-		// make jrPage css to have page-break-after:always
-		jasper_viewer.find('.jrPage').css("page-break-after", "always");		
+			var jasper_viewer = $("#jasper_viewer").contents();		
+			// make everything in pt rather than in px
+			jasper_viewer.find("html").html(function(i, html){
+				return html.replace(/\px/g, "pt");
+			});			
+			// make jrPage css to have page-break-after:always
+			jasper_viewer.find('.jrPage').css("page-break-after", "always");		
+		}
 		
 		bind_events();
 	});
