@@ -25,7 +25,7 @@ function bind_events() {
 
 frappe.ready(function() {
 
-	$("#jasper_viewer").ready(function(){
+	$("#jasper_viewer").on('load', function(){
 		
 		if (rtype == "html") { 
 			// do these only if its html we are previewing.. rtype comes from jinja /pages/Jasper Reports.html
