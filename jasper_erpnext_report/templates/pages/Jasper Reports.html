@@ -29,6 +29,7 @@
         {% if rtype == "html" or rtype == "pdf" %}
             <script>
             <!--
+				var rtype = "{{ rtype }}";
                 {% include "templates/includes/jasper_viewer.js" %}
             //-->
             </script>
