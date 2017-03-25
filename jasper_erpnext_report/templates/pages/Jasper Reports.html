@@ -21,7 +21,7 @@
 
         <div id="outerviewer" class="embed-responsive embed-responsive-4by3">
 
-            <iframe name="jasper_viewer" id="jasper_viewer" class="embed-responsive-item" src="{{ jasper_report_path }}" allowfullscreen="true" seamless="seamless">
+            <iframe name="jasper_viewer" id="jasper_viewer" class="embed-responsive-item" allowfullscreen="true" seamless="seamless">
             </iframe>
 
         </div>
@@ -30,6 +30,7 @@
             <script>
             <!--
 				var rtype = "{{ rtype }}";
+				var jasper_path = "{{ jasper_report_path }}";
                 {% include "templates/includes/jasper_viewer.js" %}
             //-->
             </script>

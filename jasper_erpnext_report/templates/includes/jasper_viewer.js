@@ -7,12 +7,12 @@ function bind_events() {
 		// hiding <br> elements and bringing them back after print
 		// cant get @media print style overriding to work
 		// if you were able to do it, pls send a PR :)
-		$("#jasper_viewer").contents().find("br").css("display", "none");
+		$("#jasper_viewer").contents().find("td > br").css("display", "none");
 		
 		window.frames["jasper_viewer"].focus();
 		window.frames["jasper_viewer"].print();
 		
-		$("#jasper_viewer").contents().find("br").css("display", "block");
+		$("#jasper_viewer").contents().find("td > br").css("display", "block");
 	});
 
 	$(document).find("#jasper_fullscreen").click(function() {
@@ -40,17 +40,21 @@ frappe.ready(function() {
 		}
 		
 		bind_events();
+		
+		// update css after everything
+		$("#jasper_viewer").css({
+			"padding":"10px",
+			"padding-top":"30px",
+		   "background":"#404040",
+		   "webkit-border-radius": "7px",
+		   "-moz-border-radius": "7px",
+		   "border-radius": "7px",
+		   "margin":"0 auto",
+		   "overflow":"hidden"
+		});
 	});
-
-	$("#jasper_viewer").css({
-		"padding":"10px",
-		"padding-top":"30px",
-	   "background":"#404040",
-	   "webkit-border-radius": "7px",
-	   "-moz-border-radius": "7px",
-	   "border-radius": "7px",
-	   "margin":"0 auto",
-	   "overflow":"hidden"
-	});
+	
+	var jv = document.getElementById("jasper_viewer");
+	jv.src = jasper_path;
 
 });

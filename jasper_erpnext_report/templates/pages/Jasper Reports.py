@@ -47,6 +47,7 @@ def viewer_html(filename):
 	jasper_report_path = frappe.form_dict.jasper_doc_path
 	url = frappe.utils.get_url()
 	if url.endswith("/"): url = url[:-1]
+	url = '' # we dont want the hostname
 	url = url + "/assets/jasper_erpnext_report/reports/" + frappe.local.site + "/" + jasper_report_path
 	url = frappe.utils.quote_urls(url)
 	return {
@@ -59,7 +60,7 @@ def viewer_pdf(filename):
 	jasper_report_path = frappe.form_dict.jasper_doc_path
 	url = frappe.utils.get_url()
 	if url.endswith("/"): url = url[:-1]
-
+	url = '' # we dont want the hostname
 	urlpdf = url + "/assets/jasper_erpnext_report/reports/"+ frappe.local.site + "/" + jasper_report_path
 	url = frappe.utils.quote_urls(urlpdf)
 	urlbase = frappe.utils.quote_urls(url)
