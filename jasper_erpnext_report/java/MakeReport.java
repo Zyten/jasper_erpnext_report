@@ -14,6 +14,10 @@ import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 import net.sf.jasperreports.engine.JasperPrint;
 
+import net.sf.jasperreports.engine.export.HtmlExporter;
+import net.sf.jasperreports.export.SimpleHtmlReportConfiguration;
+import net.sf.jasperreports.export.type.HtmlSizeUnitEnum;
+
 import com.lowagie.text.pdf.PdfWriter;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
@@ -122,14 +126,21 @@ public class MakeReport
 		          pptxexporter.exportReport();
 		          break;
 		      case 7:
-			  	  SimpleHtmlExporterOutput exporterOutput;
-		          JRXhtmlExporter xhtmlexporter = new JRXhtmlExporter();
+			  	  SimpleHtmlExporterOutput exporterOutput;				  				 
+				  
+		          HtmlExporter xhtmlexporter = new HtmlExporter();
 				  xhtmlexporter.setExporterInput(SimpleExporterInput.getInstance(this.jasperPrintList));
 				  exporterOutput = new SimpleHtmlExporterOutput(outputPathName + extension[type]);
 				  //exporterOutput.setImageHandler(new WebHtmlResourceHandler(fileName + ".html_files/{0}"));
 				  //exporterOutput.setImageHandler(new WebHtmlResourceHandler("image?image={0}"));
 				  //exporterOutput.setResourceHandler(new FileHtmlResourceHandler(new File("./"), "./images/"));
 				  xhtmlexporter.setExporterOutput(exporterOutput);
+				  
+				  // Report Config : http://jasperreports.sourceforge.net/api/net/sf/jasperreports/export/SimpleHtmlReportConfiguration.html
+				  SimpleHtmlReportConfiguration html_report_config = new SimpleHtmlReportConfiguration();
+				  html_report_config.setSizeUnit(HtmlSizeUnitEnum.POINT);					// this will make the html in pt units than in px units
+				  xhtmlexporter.setConfiguration(html_report_config);
+				  
 		          //xhtmlexporter.setParameter(JRExporterParameter.JASPER_PRINT, this.jasperPrintList);
 		          //xhtmlexporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, outputPathName + ".html");
 		          //xhtmlexporter.setParameter(JRHtmlExporterParameter.IS_OUTPUT_IMAGES_TO_DIR, Boolean.TRUE);
