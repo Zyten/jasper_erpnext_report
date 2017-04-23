@@ -31,10 +31,15 @@ frappe.ready(function() {
 			// do these only if its html we are previewing.. rtype comes from jinja /pages/Jasper Reports.html
 		
 			var jasper_viewer = $("#jasper_viewer").contents();		
+						
+			/* This was used when the parameter did not work back in the dev days..
 			// make everything in pt rather than in px
 			jasper_viewer.find("html").html(function(i, html){
 				return html.replace(/\px/g, "pt");
-			});			
+			});
+			*/
+			
+			
 			// make jrPage css to have page-break-after:always
 			jasper_viewer.find('.jrPage').css("page-break-after", "always");		
 		}
