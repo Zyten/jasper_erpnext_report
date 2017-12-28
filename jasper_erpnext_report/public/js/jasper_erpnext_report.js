@@ -25,9 +25,9 @@ async_func_callback = function(data){
 		jasper.pending_reports.push(result);
 		//setTimeout(jasper.jasper_report_ready, 1000*10, poll_data, $banner, timeout);
 		jasper.jasper_report_ready(poll_data, $banner, timeout);
-		frappe.socket.socket.emit('task_unsubscribe', data.task_id);
+		frappe.socketio.socket.emit('task_unsubscribe', data.task_id);
 	}else{
-		frappe.socket.socket.emit('task_unsubscribe', data.task_id);
+		frappe.socketio.socket.emit('task_unsubscribe', data.task_id);
 		if (result.status === "ready"){
            jasper.pending_reports.push(result);
            setTimeout(jasper.jasper_report_ready, 1000*10, result, $banner, timeout);
@@ -35,15 +35,15 @@ async_func_callback = function(data){
            jasper.polling_report(result, $banner, timeout);
         }
      }
-	delete frappe.socket.open_tasks[data.task_id];
+	delete frappe.socketio.open_tasks[data.task_id];
 }
 
 queued_func_callback = function(data){
 	//frappe.socket.subscribe("Local-" + data.task_id, {callback:async_func_callback});
 	var task_id = "Local-" + data.task_id;
 	var opts = {callback:async_func_callback};
-	frappe.socket.task_subscribe(task_id);
-	frappe.socket.open_tasks[task_id] = opts;
+	frappe.socketio.task_subscribe(task_id);
+	frappe.socketio.open_tasks[task_id] = opts;
 }
 
 jasper.run_jasper_report = function(method, data, doc){
