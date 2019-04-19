@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 __author__ = 'luissaguas'
 from frappe import _
 import frappe
-import frappe.async
+# import frappe.async
 import json
 from urllib2 import unquote
 import time

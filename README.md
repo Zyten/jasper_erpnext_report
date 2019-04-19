@@ -1,4 +1,66 @@
 
+# Cnage in this file env/local/lib/python2.7/site-packages/jasperserverlib/core/rest.py
+
+from 
+```python
+	def _login(self, username, password):
+        # Send POST authentification and retrieve the cookie
+        headers = {'Content-type': 'application/x-www-form-urlencoded'}
+        headers.update(self.headers)
+        params = {
+                'j_username': username,
+                'j_password': password,
+        }
+
+        #_logger.info("jasperserverlib _login request headers: {}".format(headers))
+        response = requests.post(self._rest_url + '/login', data=params, headers=headers)
+        statuscode = response.status_code
+        if statuscode in StatusException:
+            #raise JsException('Logging Error')
+            raise StatusException[statuscode]()
+        
+        #_logger.info("jasperserverlib _login response headers: {}".format(response.headers))
+        #if response.headers.get('set-cookie'):
+        self.headers['Cookie'] = response.headers['set-cookie']
+        
+        self.session.setSessionId(self.headers['Cookie'])
+        
+        self.result["content"] = None
+        self.result["response"] = None
+        
+        return self
+```
+to 
+```python
+	def _login(self, username, password):
+        # Send POST authentification and retrieve the cookie
+        headers = {'Content-type': 'application/x-www-form-urlencoded'}
+        headers.update(self.headers)
+        params = {
+                'j_username': username,
+                'j_password': password,
+        }
+
+        #_logger.info("jasperserverlib _login request headers: {}".format(headers))
+        response = requests.post(self._rest_url + '/login', data=params, headers=headers)
+        statuscode = response.status_code
+        if statuscode in StatusException and statuscode != 404:
+            #raise JsException('Logging Error')
+            raise StatusException[statuscode]()
+        
+        #_logger.info("jasperserverlib _login response headers: {}".format(response.headers))
+        #if response.headers.get('set-cookie'):
+        self.headers['Cookie'] = response.headers['set-cookie']
+        
+        self.session.setSessionId(self.headers['Cookie'])
+        
+        self.result["content"] = None
+        self.result["response"] = None
+        
+        return self
+
+```
+
 Jasper Erpnext Report
 =============================
 This project is a module to work with frappe framework **version 7.1.0-beta and above**. It integrate [JasperReports](http://community.jaspersoft.com/project/jasperreports-library) with frappe framework.

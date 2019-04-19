@@ -358,7 +358,7 @@ jasper.upload = {
 		// get the first file
 		$upload.find(".btn-upload").click(function() {
 			// convert functions to values
-			for(key in opts.args) {
+			for(let key in opts.args) {
 				if(typeof val==="function")
 					opt.args[key] = opts.args[key]();
 			}

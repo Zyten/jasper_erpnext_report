@@ -15,7 +15,7 @@ jasper.close_banner = function($banner){
     $banner.find(".close").click();
 };
 
-show_banner_message = function(msg, where_ok, where_cancel, bckcolor, callback){
+const show_banner_message = function(msg, where_ok, where_cancel, bckcolor, callback){
     $banner = jasper.show_banner(msg);
     if (bckcolor != null)
         $banner.css({background: bckcolor, opacity: 0.9});
