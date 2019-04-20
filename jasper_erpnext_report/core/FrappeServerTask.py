@@ -11,7 +11,7 @@ class FrappeTask(object):
 		self.result = result
 
 	def setReadyTask(self):
-		from frappe.async import emit_via_redis
+		from frappe.realtime import emit_via_redis
 
 		response = {}
 		response.update({

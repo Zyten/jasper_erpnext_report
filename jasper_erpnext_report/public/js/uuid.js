@@ -5,7 +5,7 @@
 
 /*global window, require, define */
 (function(_window) {
-  'use strict';
+  // 'use strict';
 
   // Unique ID creation requires a high quality random # generator.  We feature
   // detect to determine the best RNG source, normalizing to a function that
@@ -50,23 +50,23 @@
     }
   }
 
-  function setupNode() {
-    // Node.js crypto-based RNG - http://nodejs.org/docs/v0.6.2/api/crypto.html
-    //
-    // Moderately fast, high quality
-    if ('function' === typeof require) {
-      try {
-        var _rb = require('crypto').randomBytes;
-        _nodeRNG = _rng = _rb && function() {return _rb(16);};
-        _rng();
-      } catch(e) {}
-    }
-  }
+  // function setupNode() {
+  //   // Node.js crypto-based RNG - http://nodejs.org/docs/v0.6.2/api/crypto.html
+  //   //
+  //   // Moderately fast, high quality
+  //   if ('function' === typeof require) {
+  //     try {
+  //       var _rb = require('crypto').randomBytes;
+  //       _nodeRNG = _rng = _rb && function() {return _rb(16);};
+  //       _rng();
+  //     } catch(e) {}
+  //   }
+  // }
 
   if (_window) {
     setupBrowser();
   } else {
-    setupNode();
+    // setupNode();
   }
 
   // Buffer class to use
@@ -249,24 +249,26 @@
   uuid._nodeRNG = _nodeRNG;
   uuid._whatwgRNG = _whatwgRNG;
 
-  if (('undefined' !== typeof module) && module.exports) {
-    // Publish as node.js module
-    module.exports = uuid;
-  } else if (typeof define === 'function' && define.amd) {
-    // Publish as AMD module
-    define(function() {return uuid;});
+  // if (('undefined' !== typeof module) && module.exports) {
+  //   // Publish as node.js module
+  //   module.exports = uuid;
+  // } else if (typeof define === 'function' && define.amd) {
+  //   // Publish as AMD module
+  //   define(function() {return uuid;});
 
 
-  } else {
-    // Publish as global (in browsers)
-    _previousRoot = _window.uuid;
+  // } else {
+  //   // Publish as global (in browsers)
+  //   _previousRoot = _window.uuid;
 
-    // **`noConflict()` - (browser only) to reset global 'uuid' var**
-    uuid.noConflict = function() {
-      _window.uuid = _previousRoot;
-      return uuid;
-    };
+  //   // **`noConflict()` - (browser only) to reset global 'uuid' var**
+  //   uuid.noConflict = function() {
+  //     _window.uuid = _previousRoot;
+  //     return uuid;
+  //   };
 
-    _window.uuid = uuid;
-  }
+  //   _window.uuid = uuid;
+  // }
+
+  _window.uuid = uuid;
 })('undefined' !== typeof window ? window : null);

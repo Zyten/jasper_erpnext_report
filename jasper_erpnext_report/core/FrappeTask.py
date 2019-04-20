@@ -48,7 +48,7 @@ class FrappeTask(PythonJavaClass):
 		self.result = result
 
 	def emit_via_redis(self):
-		from frappe.async import emit_via_redis
+		from frappe.realtime import emit_via_redis
 		import frappe
 
 		response = {}

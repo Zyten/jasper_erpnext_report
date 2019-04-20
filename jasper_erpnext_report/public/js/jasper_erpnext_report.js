@@ -4,14 +4,14 @@ jasper.pending_reports = [];
 
 jasper.poll_count = 0;
 
-pending_banner = [];
+jasper.pending_banner = [];
 
-jasper_report_formats = {pdf:"icon-file-pdf", "docx": "icon-file-word", doc: "icon-file-word", xls:"icon-file-excel", xlsx:"icon-file-excel", 
+jasper.jasper_report_formats = {pdf:"icon-file-pdf", "docx": "icon-file-word", doc: "icon-file-word", xls:"icon-file-excel", xlsx:"icon-file-excel", 
 						/*ppt:"icon-file-powerpoint", pptx:"icon-file-powerpoint",*/ odt: "icon-file-openoffice", ods: "icon-libreoffice",
 	 					rtf:"fontello-icon-doc-text", email: "icon-envelope-alt", submenu:"icon-grid"};
 
-async_func_callback = function(data){
-	var banner_data = pending_banner.pop()
+const async_func_callback = function(data){
+	var banner_data = jasper.pending_banner.pop()
 	var $banner = banner_data.banner;
 	var timeout = banner_data.timeout;
 	var result = data.result;
@@ -38,7 +38,7 @@ async_func_callback = function(data){
 	delete frappe.socketio.open_tasks[data.task_id];
 }
 
-queued_func_callback = function(data){
+const queued_func_callback = function(data){
 	//frappe.socket.subscribe("Local-" + data.task_id, {callback:async_func_callback});
 	var task_id = "Local-" + data.task_id;
 	var opts = {callback:async_func_callback};
@@ -52,9 +52,9 @@ jasper.run_jasper_report = function(method, data, doc){
     data.task_id = task_id;
 
     queued_func_callback({task_id: task_id});
-    $banner = jasper.show_banner(__("Please wait. System is processing your report. It will notify you when ready."));
-    timeout = setTimeout(jasper.close_banner, 1000*15, $banner);
-    pending_banner.push({banner:$banner, timeout:timeout});
+    const $banner = jasper.show_banner(__("Please wait. System is processing your report. It will notify you when ready."));
+    const timeout = setTimeout(jasper.close_banner, 1000*15, $banner);
+    jasper.pending_banner.push({banner:$banner, timeout:timeout});
 
     frappe.call({
 	       "method": "jasper_erpnext_report.core.JasperWhitelist." + method,
@@ -113,7 +113,7 @@ jasper.polling_report = function(data, $banner, timeout){
                        jasper.close_banner($banner);
                        var banner_msg = __("Timeout before report is ready to download. Click to ") + '<a class="try_again_report">'+__("Try Again")+'</a>'
                        + "  " +'<a class="cancel_report">Cancel</a>';
-                       show_banner_message(banner_msg, ".try_again_report", ".cancel_report", "#FFFF99", function($banner, what){
+                       jasper.show_banner_message(banner_msg, ".try_again_report", ".cancel_report", "#FFFF99", function($banner, what){
                            jasper.close_banner($banner);
                            if (what === "ok"){
                                var ptime = parseInt(frappe.boot.jasper_reports_list && frappe.boot.jasper_reports_list.jasper_polling_time);
@@ -137,7 +137,7 @@ jasper.jasper_report_ready = function(msg, $old_banner, timeout){
     $old_banner.find(".close").click();
     clearTimeout(timeout);
     var banner_msg = __("Your report is ready to download. Click to ") + '<a class="download_report">'+__("download")+'</a>';
-    show_banner_message(banner_msg, ".download_report", null, "lightGreen", function($banner){
+    jasper.show_banner_message(banner_msg, ".download_report", null, "lightGreen", function($banner){
         jasper.getReport(msg);
 		jasper.close_banner($banner);
     });
@@ -258,8 +258,8 @@ jasper.getListOnly = function(page, doctype, docnames){
 		return {done: function(f){f()}}
 	}
 
-	method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
-	data = {doctype: doctype, docnames: docnames, report: null};
+	var method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
+	var data = {doctype: doctype, docnames: docnames, report: null};
 	jasper.jasper_make_request(method, data,function(response_data){
 		jasper.pages[page] = response_data.message;
 		dfd.resolve();
@@ -274,8 +274,8 @@ jasper.getList = function(page, doctype, docnames){
 		list = jasper.pages[page];
 		setJasperDropDown(list, jasper.getOrphanReport);
 	}else{
-		method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
-		data = {doctype: doctype, docnames: docnames, report: null};
+		var method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
+		var data = {doctype: doctype, docnames: docnames, report: null};
 		jasper.jasper_make_request(method, data,function(response_data){
 			jasper.pages[page] = response_data.message;
 			setJasperDropDown(response_data.message, jasper.getOrphanReport);
@@ -288,8 +288,8 @@ jasper.getQueryReportList = function(query_report){
 		list = jasper.report[query_report];
 		setJasperDropDown(list, jasper.getOrphanReport);
 	}else{
-		method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
-		data = {doctype: null, docnames: null, report: query_report};
+		var method = "jasper_erpnext_report.core.JasperWhitelist.get_reports_list";
+		var data = {doctype: null, docnames: null, report: query_report};
 		jasper.jasper_make_request(method, data,function(response_data){
 			jasper.report[query_report] = response_data.message;
 			setJasperDropDown(response_data.message, jasper.getOrphanReport);
@@ -311,7 +311,7 @@ $(window).on('hashchange', function() {
 		var data;
 		doctype = route[1];
 		docname = route[2];
-		doc_new = docname.search("New");
+		var doc_new = docname.search("New");
 		if (doc_new === -1 || doc_new > 0){
             var page = jasper.get_page();
 			jasper.getList(page, doctype, [docname]);
@@ -350,7 +350,7 @@ jasper.get_doc = function(doctype, docname){
     return df;
 };
 
-setJasperDropDown = function(list, callback){
+const setJasperDropDown = function(list, callback){
 	$(".dropdown.jasper_report_list_menu").remove();
 	if (list && !$.isEmptyObject(list) && list.size > 0){
 		var size = list.size;

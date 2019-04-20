@@ -1,33 +1,33 @@
 frappe.provide("jasper");
 
 jasper.show_banner = function(msg) {
-	$banner = $('<div class="toolbar-banner">'+msg+'<a class="close">&times;</a></div>')
+	jasper.$banner = $('<div class="toolbar-banner">'+msg+'<a class="close">&times;</a></div>')
 		.prependTo($('header .navbar'));
 		$("body").css({"padding-top": "70px"});
-	$banner.find(".close").click(function() {
+	jasper.$banner.find(".close").click(function() {
 		$(".toolbar-banner").toggle(false);
 		$("body").css({"padding-top": "36px"});
 	});
-	return $banner;
+	return jasper.$banner;
 }
 
 jasper.close_banner = function($banner){
     $banner.find(".close").click();
 };
 
-const show_banner_message = function(msg, where_ok, where_cancel, bckcolor, callback){
-    $banner = jasper.show_banner(msg);
+jasper.show_banner_message = function(msg, where_ok, where_cancel, bckcolor, callback){
+    jasper.$banner = jasper.show_banner(msg);
     if (bckcolor != null)
-        $banner.css({background: bckcolor, opacity: 0.9});
+		jasper.$banner.css({background: bckcolor, opacity: 0.9});
     if (where_ok != null){
-	    $banner.find(where_ok).click(function(){
-            callback($banner, "ok");
+	    jasper.$banner.find(where_ok).click(function(){
+            callback(jasper.$banner, "ok");
         });
     };
 
     if(where_cancel != null){
-    	$banner.find(where_cancel).click(function(){
-            callback($banner, "cancel");
+    	jasper.$banner.find(where_cancel).click(function(){
+            callback(jasper.$banner, "cancel");
         });
     };
 }
@@ -51,10 +51,10 @@ jasper.make_menu = function(list, key, skey){
 	var html = "";
 	for(var i=0; i < f.length; i++){
 		var type = f[i];
-		icon_file.push(repl('<i title="%(title)s" data-jr_format="%(f)s" data-jr_name="%(mykey)s" class="jasper-%(type)s"></i>', {title:key + " - " + type, mykey:key, f:f[i], type: jasper_report_formats[type]}));
+		icon_file.push(repl('<i title="%(title)s" data-jr_format="%(f)s" data-jr_name="%(mykey)s" class="jasper-%(type)s"></i>', {title:key + " - " + type, mykey:key, f:f[i], type: jasper.jasper_report_formats[type]}));
 	};
     if (email === 1 && mail_enabled === 1){
-        icon_file.push(repl('<i title="%(title)s" data-jr_format="%(f)s" data-jr_name="%(mykey)s" class="%(type)s"></i>', {title: "send by email", mykey:key, f:"email", type: jasper_report_formats["email"]}));
+        icon_file.push(repl('<i title="%(title)s" data-jr_format="%(f)s" data-jr_name="%(mykey)s" class="%(type)s"></i>', {title: "send by email", mykey:key, f:"email", type: jasper.jasper_report_formats["email"]}));
     }
 	html = html + '<li>'
        + repl('<a class="jrreports" href="#" data-jr_format="%(f)s" data-jr_name="%(mykey)s"',{mykey:key, f:"html"}) +' title="'+ key +' - html" >'+ icon_file.join(" ") + " " + skey  + '</a>'
