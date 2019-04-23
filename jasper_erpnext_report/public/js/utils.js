@@ -69,7 +69,7 @@ jasper.sortObject = function (o) {
 };
 
 jasper.getChecked = function(name){
-	return $(frappe.pages[name]).find("input:checked");
+	return $(frappe.pages[name]).find("input:checked.list-row-checkbox");
 };
 
 jasper.getCheckedNames = function(page){
