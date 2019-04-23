@@ -75,11 +75,9 @@ jasper.getChecked = function(name){
 jasper.getCheckedNames = function(page){
 	var names = [];
 	var checked = jasper.getChecked(page);
-	var elems_a = checked.siblings("a");
-	elems_a.each(function(i,el){
-		var t = unescape($(el).attr("href")).slice(1);
-		var s = t.split("/");
-		names.push(s[s.length - 1]);
+	checked.each(function(i,el){
+		var t = unescape($(el).data("name"));
+		names.push(t);
 	});
 
 	return names;
@@ -92,6 +90,9 @@ jasper.getIdsFromList = function(){
 	if (len > 1 && route[0] === "List"){
 		var doctype = route[1];
 		var page = [route[0], doctype].join("/");
+
+		// in v11, frappe.pages has keys with List/ appended as both prefix and suffix
+		page = Object.keys(frappe.pages).find(p => p.indexOf(page) >= 0);
 		docids = jasper.getCheckedNames(page);
 	}
 
